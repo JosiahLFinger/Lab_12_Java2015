@@ -2,6 +2,7 @@ package com.josiah;
 
 import java.sql.*;
 import java.sql.Date;
+import java.time.DateTimeException;
 import java.util.*;
 
 public class Main {
@@ -9,7 +10,7 @@ public class Main {
     // JDBC driver name, protocol, used to create a connection to the DB
 
     private static String protocol = "jdbc:derby:";
-    private static String dbName = "weatherDB";
+    private static String dbName = "beehiveDB1";
 
     //  Database credentials - for embedded, usually defaults. A client-server DB would need to authenticate connections
     private static final String USER = "temp";
@@ -34,7 +35,7 @@ public class Main {
 
             //Create a table in the database. Stores today's date, and the min and max temperatures recorded.
 
-            String createTableSQL = "CREATE TABLE temp (day date, mintemp double, maxtemp double)";
+            String createTableSQL = "CREATE TABLE temp (collectionDay date, honeyWeight double)";
             String deleteTableSQL = "DROP TABLE temp";
             try {
                 statement.executeUpdate(createTableSQL);
@@ -54,33 +55,68 @@ public class Main {
 
             //Add some test data
 
-            String prepStatInsert = "INSERT INTO temp VALUES ( ?, ?, ? )";
+            String prepStatInsert = "INSERT INTO temp VALUES ( ?, ? )";
 
             psInsert = conn.prepareStatement(prepStatInsert);
             allStatements.add(psInsert);
 
-            psInsert.setDate(1, Date.valueOf("2014-04-01"));
-            psInsert.setDouble(2, 44.2);
-            psInsert.setDouble(3, 58.7);
-            psInsert.executeUpdate();
-
-            psInsert.setDate(1, Date.valueOf("2014-04-02"));
-            psInsert.setDouble(2, 34.6);
-            psInsert.setDouble(3, 55.1);
-            psInsert.executeUpdate();
-
-            psInsert.setDate(1, Date.valueOf("2014-04-04"));
-            psInsert.setDouble(2, 43.9);
-            psInsert.setNull(3, Types.DOUBLE);  //Forgot to record the max temperature for this date so set it to null.
-            psInsert.executeUpdate();
-
-            psInsert.setDate(1, Date.valueOf("2014-04-04"));
-            psInsert.setDouble(2, 43.8);
-            psInsert.setDouble(3, 47.2);
-            psInsert.executeUpdate();
 
 
-            System.out.println("Added test data to database");
+
+
+
+            //todo get this working. Exceptions need work.
+
+
+
+
+
+
+            Scanner sc = new Scanner(System.in);
+
+            for (int x = 0; x < 4; x++) {
+                String tempDate;
+                double tempWeight;
+                try {
+                    System.out.println("What was the date you harvested the honey from hive " + (x+1) + "? (YYYY-MM-DD)");
+                    tempDate = sc.nextLine();
+                    System.out.println("What was the was the weight(lbs) of the collected honey?");
+                    tempWeight = sc.nextDouble();
+                    psInsert.setDate(1, Date.valueOf(tempDate));
+                    psInsert.setDouble(2, tempWeight);
+                } catch (IllegalArgumentException iae){
+                    iae.printStackTrace();
+                    System.out.println("The date was not in the correct format. Please try again.\nformat: YYYY-MM-DD (2014-04-01)");
+                    tempDate = sc.nextLine();
+                    psInsert.setDate(1, Date.valueOf(tempDate));
+                } catch (InputMismatchException ime) {
+                    System.out.println("The weight was not input correctly. Please try again with just numbers.");
+                    tempWeight = sc.nextDouble();
+                    psInsert.setDouble(2, tempWeight);
+                }
+            }
+
+            sc.close();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             //Let's calculate the average minumum and average maximum temperature for all the days.
             //Add up all the maximum temperatures and divide by number of days to get average max temperature.
