@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Apr 07 17:42:41 CDT 2015:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-014c-960c-c375-000006fc1b48 
+on database directory C:\Users\es3062nv\IdeaProjects\Lab12\weatherDB with class loader sun.misc.Launcher$AppClassLoader@74a14482 
+Loaded from file:/C:/Users/es3062nv/.IntelliJIdea14/config/jdbc-drivers/derby-10.11.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_25-b18
+user.dir=C:\Users\es3062nv\IdeaProjects\Lab12
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
